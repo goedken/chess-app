@@ -1,13 +1,26 @@
 import * as React from "react";
 import { Square } from "../Square";
+import { Piece } from "../Piece";
+import { King } from "../King";
 
 import "./styles.scss";
 
 export class Board extends React.Component<any, {}> {
-  renderRow(isOddRow: boolean, pieces: Array<String>, y: number) {
+  selectedSquare: Array<number>;
+  validMoves: Array<Array<number>>;
+
+  // TODO: add selectedSquare logic to Board
+  handleClick(x: number, y: number, piece: Piece) {
+    this.validMoves = piece.getValidMoves(x, y);
+    console.log(this.validMoves);
+  }
+
+  renderRow(isOddRow: boolean, pieces: Array<any>, y: number) {
     return (
       <div>
-        <Square isBlack={!isOddRow} piece={pieces[0]} x={0} y={y}/>
+        <div onClick={() => this.handleClick(0, y, pieces[0])}>
+          <Square isBlack={!isOddRow} piece={pieces[0]} x={0} y={y}/>
+        </div>
         <Square isBlack={isOddRow} piece={pieces[1]} x={1} y={y}/>
         <Square isBlack={!isOddRow} piece={pieces[2]} x={2} y={y}/>
         <Square isBlack={isOddRow} piece={pieces[3]} x={3} y={y}/>
@@ -20,7 +33,8 @@ export class Board extends React.Component<any, {}> {
   }
 
   render() {
-    const pieces = ['K', null, null, null, null, null, null, null];
+    let k = new King({});
+    const pieces = [k, null, null, null, null, null, null, null];
     const emptyRow = Array(8).fill(null);
     return (
       <div>
