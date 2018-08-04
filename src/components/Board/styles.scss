@@ -5,3 +5,19 @@
   content: "";
   display: table;
 }
+
+.black {
+  background-color: $black;
+}
+
+.white {
+  background-color: $white;
+}
+
+.selected {
+  background-color: $orange;
+}
+
+.highlighted {
+  background-color: $yellow;
+}
