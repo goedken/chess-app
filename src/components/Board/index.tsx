@@ -3,6 +3,7 @@ import { Square } from "../Square";
 import { Piece } from "../Piece";
 import { King } from "../King";
 import { Rook } from "../Rook";
+import { Bishop } from "../Bishop";
 
 import "./styles.scss";
 
@@ -19,16 +20,28 @@ export class Board extends React.Component<any, {}> {
     });
     const whiteRook1 = new Rook({
       color: "white"
-    })
+    });
     const whiteRook2 = new Rook({
       color: "white"
-    })
+    });
     const blackRook1 = new Rook({
       color: "black"
-    })
+    });
     const blackRook2 = new Rook({
       color: "black"
-    })
+    });
+    const whiteBishop1 = new Bishop({
+      color: "white"
+    });
+    const whiteBishop2 = new Bishop({
+      color: "white"
+    });
+    const blackBishop1 = new Bishop({
+      color: "black"
+    });
+    const blackBishop2 = new Bishop({
+      color: "black"
+    });
     let board = new Array(8).fill(null).map(()=>new Array(8).fill(null));
     board[0][4] = blackKing;
     board[7][4] = whiteKing;
@@ -36,6 +49,10 @@ export class Board extends React.Component<any, {}> {
     board[0][7] = blackRook2;
     board[7][0] = whiteRook1;
     board[7][7] = whiteRook2;
+    board[0][2] = blackBishop1;
+    board[0][5] = blackBishop2;
+    board[7][2] = whiteBishop1;
+    board[7][5] = whiteBishop2;
     this.state = {
       selectedSquare: [null, null],
       validMoves: [],

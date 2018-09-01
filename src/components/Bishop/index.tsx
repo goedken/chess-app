@@ -1,29 +1,23 @@
 import * as React from "react";
-import { R } from "../../constants";
+import { B } from "../../constants";
 import { Piece } from "../Piece";
 
 import "./styles.scss";
 
-export class Rook extends Piece {
-  name: string;
+export class Bishop extends Piece {
+  public name: string;
 
   constructor(props: any) {
     super(props);
-    this.name = "R";
+    this.name = "B";
   }
 
   getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
-    const sortedR = R.sort((a, b) => {
-      if (a[0] === b[0]) {
-        return a[1] - b[1];
-      }
-      return a[0] - b[0];
-    });
     const directions: { [index:string]: number[][] } = {
-      left: sortedR.slice(0, 7).sort((a, b) => Math.abs(a[0] - b[0])),
-      up: sortedR.slice(7, 14).sort((a, b) => Math.abs(a[1] - b[1])),
-      right: sortedR.slice(14, 21),
-      down: sortedR.slice(21, 28),
+      upLeft: B.slice(0, 7),
+      upRight: B.slice(7, 14),
+      downRight: B.slice(14, 21),
+      downLeft: B.slice(21, 28),
     };
     let relativePositions: number[][] = [];
     for (let direction in directions) { // Loop through each possible direction the Rook can move in

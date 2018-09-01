@@ -15,8 +15,6 @@ export class Square extends React.Component<any, {}> {
   }
   
   render() {
-    // const colorClass = this.props.isBlack ? "black" : "white";
-    // const selected = this.state.selected ? " selected" : "";
     const avatar = this.props.piece ? this.props.piece.name : "";
     const color = this.props.piece ? this.props.piece.color : null;
     return (

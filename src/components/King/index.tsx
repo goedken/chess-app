@@ -13,7 +13,12 @@ export class King extends Piece {
   }
 
   getValidMoves(x: number, y: number): Array<Array<number>> {
-    const neighbors = K.filter(neighbor => x + neighbor[0] > -1 && y + neighbor[1] < 8);
+    const neighbors = K.filter(neighbor => {
+      let xCandidate = neighbor[0];
+      let yCandidate = neighbor[1];
+      return (x + xCandidate > -1 && x + xCandidate < 8) && 
+        (y + yCandidate > -1 && y + yCandidate < 8)
+    });
     return neighbors.map(neighbor => [x + neighbor[0], y + neighbor[1]]);
   }
 }
