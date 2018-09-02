@@ -2,8 +2,11 @@ import * as React from "react";
 import { Square } from "../Square";
 import { Piece } from "../Piece";
 import { King } from "../King";
+import { Queen } from "../Queen";
 import { Rook } from "../Rook";
 import { Bishop } from "../Bishop";
+import { Knight } from "../Knight";
+import { Pawn } from "../Pawn";
 
 import "./styles.scss";
 
@@ -18,33 +21,77 @@ export class Board extends React.Component<any, {}> {
     const blackKing = new King({
       color: "black"
     });
-    const whiteRook1 = new Rook({
+    const whiteQueen = new Queen({
       color: "white"
+    });
+    const blackQueen = new Queen({
+      color: "black"
+    });
+    const whiteRook1 = new Rook({
+      color: "white",
+      x: 0,
+      y: 7,
     });
     const whiteRook2 = new Rook({
-      color: "white"
+      color: "white",
+      x: 7,
+      y: 7,
     });
     const blackRook1 = new Rook({
-      color: "black"
+      color: "black",
+      x: 0,
+      y: 0,
     });
     const blackRook2 = new Rook({
-      color: "black"
+      color: "black",
+      x: 7,
+      y: 0,
     });
     const whiteBishop1 = new Bishop({
-      color: "white"
+      color: "white",
+      x: 2,
+      y: 7,
     });
     const whiteBishop2 = new Bishop({
-      color: "white"
+      color: "white",
+      x: 5,
+      y: 7,
     });
     const blackBishop1 = new Bishop({
-      color: "black"
+      color: "black",
+      x: 2,
+      y: 0,
     });
     const blackBishop2 = new Bishop({
-      color: "black"
+      color: "black",
+      x: 5,
+      y: 0,
+    });
+    const whiteKnight1 = new Knight({
+      color: "white",
+      x: 1,
+      y: 7,
+    });
+    const whiteKnight2 = new Knight({
+      color: "white",
+      x: 6,
+      y: 7,
+    });
+    const blackKnight1 = new Knight({
+      color: "black",
+      x: 1,
+      y: 0,
+    });
+    const blackKnight2 = new Knight({
+      color: "black",
+      x: 6,
+      y: 0,
     });
     let board = new Array(8).fill(null).map(()=>new Array(8).fill(null));
     board[0][4] = blackKing;
     board[7][4] = whiteKing;
+    board[0][3] = blackQueen;
+    board[7][3] = whiteQueen;
     board[0][0] = blackRook1;
     board[0][7] = blackRook2;
     board[7][0] = whiteRook1;
@@ -53,6 +100,22 @@ export class Board extends React.Component<any, {}> {
     board[0][5] = blackBishop2;
     board[7][2] = whiteBishop1;
     board[7][5] = whiteBishop2;
+    board[0][1] = blackKnight1;
+    board[0][6] = blackKnight2;
+    board[7][1] = whiteKnight1;
+    board[7][6] = whiteKnight2;
+    for (let i = 0; i < 8; ++i) {
+      board[1][i] = new Pawn({
+        color: "black",
+        x: i,
+        y: 1,
+      });
+      board[6][i] = new Pawn({
+        color: "white",
+        x: i,
+        y: 6,
+      })
+    }
     this.state = {
       selectedSquare: [null, null],
       validMoves: [],
@@ -61,16 +124,12 @@ export class Board extends React.Component<any, {}> {
   }
 
   movePiece(x: number, y: number) {
-    const targetPiece = this.state.board[y][x];
-    const movingPiece = this.state.board[this.state.selectedSquare[1]][this.state.selectedSquare[0]];
-    if (targetPiece && targetPiece.color === movingPiece.color) return;
-    let board = this.state.board.slice();
-    board[y][x] = movingPiece;
-    board[this.state.selectedSquare[1]][this.state.selectedSquare[0]] = null;
+    let piece = this.state.board[this.state.selectedSquare[1]][this.state.selectedSquare[0]];
+    const newBoard = piece.moveTo(x, y, this.state.board);
     this.setState({
       selectedSquare: [null, null],
       validMoves: [],
-      board: board
+      board: newBoard
     })
   }
 
@@ -85,7 +144,6 @@ export class Board extends React.Component<any, {}> {
   }
 
   handleClick(x: number, y: number, piece: Piece) {
-    console.log(x,y);
     if (this.isValidMove(x, y)) {
       this.movePiece(x, y);
       return;

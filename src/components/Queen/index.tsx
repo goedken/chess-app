@@ -1,23 +1,33 @@
 import * as React from "react";
-import { R } from "../../constants";
+import { Q } from "../../constants";
 import { Piece } from "../Piece";
 
 import "./styles.scss";
 
-export class Rook extends Piece {
-  name: string;
+export class Queen extends Piece {
+  public name: string;
 
   constructor(props: any) {
     super(props);
-    this.name = "R";
+    this.name = "Q";
+    this.x = props.x || 3;
+    if (props.x) {
+      this.y = props.y;
+    } else {
+      this.y = this.color === "white" ? 7 : 0;
+    }
   }
 
   getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
     const directions: { [index:string]: number[][] } = {
-      left: R.slice(0, 7),
-      up: R.slice(7, 14),
-      right: R.slice(14, 21),
-      down: R.slice(21, 28),
+      left: Q.slice(0, 7),
+      up: Q.slice(7, 14),
+      right: Q.slice(14, 21),
+      down: Q.slice(21, 28),
+      upLeft: Q.slice(28, 35),
+      upRight: Q.slice(35, 42),
+      downRight: Q.slice(42, 49),
+      downLeft: Q.slice(49, 56),
     };
     let relativePositions: number[][] = [];
     for (let direction in directions) { // Loop through each possible direction the Rook can move in
