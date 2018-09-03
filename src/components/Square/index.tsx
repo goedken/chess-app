@@ -14,6 +14,13 @@ export class Square extends React.Component<any, {}> {
     this.y = props.y;
   }
   
+  // isInCheck(board: Array<Array<Piece>>, color: string): boolean {
+  //   let opponentPieces: Array<Piece> = [];
+  //   for (let i = 0; i < board.length; ++i) {
+  //     for (let j = 0; j < board[i])
+  //   }
+  // }
+
   render() {
     const avatar = this.props.piece ? this.props.piece.name : "";
     const color = this.props.piece ? this.props.piece.color : null;

@@ -14,6 +14,7 @@ export class Pawn extends Piece {
     this.enPassantEligible = false;
   }
 
+  // TODO: do not let white capture its own pieces en passant
   moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
     this.hasMoved = true;
     if (this.enPassantEligible) this.enPassantEligible = false;
@@ -44,8 +45,8 @@ export class Pawn extends Piece {
     if (rightTarget && rightTarget.color !== this.color) possibleMoves.push([x + 1, y + direction])
     let epTargetLeft = board[y][x - 1];
     let epTargetRight = board[y][x + 1];
-    if (epTargetLeft && epTargetLeft.enPassantEligible) possibleMoves.push([x - 1, y + direction])
-    if (epTargetRight && epTargetRight.enPassantEligible) possibleMoves.push([x + 1, y + direction])
+    if (epTargetLeft && epTargetLeft.color !== this.color && epTargetLeft.enPassantEligible) possibleMoves.push([x - 1, y + direction])
+    if (epTargetRight && epTargetRight.color !== this.color && epTargetRight.enPassantEligible) possibleMoves.push([x + 1, y + direction])
     return possibleMoves;
   }
 }
