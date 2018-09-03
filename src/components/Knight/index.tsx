@@ -1,5 +1,5 @@
 import * as React from "react";
-import { N } from "../../constants";
+import { KNIGHT_MOVES } from "../../constants"; // By Bob Seger
 import { Piece } from "../Piece";
 
 import "./styles.scss";
@@ -13,7 +13,7 @@ export class Knight extends Piece {
   }
 
   getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
-    const neighbors = N.filter(neighbor => {
+    const neighbors = KNIGHT_MOVES.filter(neighbor => { // By Bob Seger
       let actualX = x + neighbor[0];
       let actualY = y + neighbor[1];
       if ((actualX <= -1 || actualX >= 8) || (actualY <= -1 || actualY >= 8)) {

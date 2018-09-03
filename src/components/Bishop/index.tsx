@@ -1,5 +1,5 @@
 import * as React from "react";
-import { B } from "../../constants";
+import { BISHOP_MOVES } from "../../constants";
 import { Piece } from "../Piece";
 
 import "./styles.scss";
@@ -13,15 +13,9 @@ export class Bishop extends Piece {
   }
 
   getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
-    const directions: { [index:string]: number[][] } = {
-      upLeft: B.slice(0, 7),
-      upRight: B.slice(7, 14),
-      downRight: B.slice(14, 21),
-      downLeft: B.slice(21, 28),
-    };
     let relativePositions: number[][] = [];
-    for (let direction in directions) { // Loop through each possible direction the Rook can move in
-      let squares = directions[direction];
+    for (let direction in BISHOP_MOVES) { // Loop through each possible direction the Rook can move in
+      let squares = BISHOP_MOVES[direction];
       let lastSquareWasOpponentPiece = false;
       for (let i = 0; i < squares.length; ++i) { // Loop through each possible coordinate pair the Rook could move to
         if (lastSquareWasOpponentPiece) break; // Cannot move through pieces

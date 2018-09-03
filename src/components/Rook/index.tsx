@@ -1,5 +1,5 @@
 import * as React from "react";
-import { R } from "../../constants";
+import { ROOK_MOVES } from "../../constants";
 import { Piece } from "../Piece";
 
 import "./styles.scss";
@@ -10,18 +10,18 @@ export class Rook extends Piece {
   constructor(props: any) {
     super(props);
     this.name = "R";
+    this.castleEligible = true;
+  }
+
+  moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
+    this.castleEligible = false;
+    return super.moveTo(x, y, board);
   }
 
   getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
-    const directions: { [index:string]: number[][] } = {
-      left: R.slice(0, 7),
-      up: R.slice(7, 14),
-      right: R.slice(14, 21),
-      down: R.slice(21, 28),
-    };
     let relativePositions: number[][] = [];
-    for (let direction in directions) { // Loop through each possible direction the Rook can move in
-      let squares = directions[direction];
+    for (let direction in ROOK_MOVES) { // Loop through each possible direction the Rook can move in
+      let squares = ROOK_MOVES[direction];
       let lastSquareWasOpponentPiece = false;
       for (let i = 0; i < squares.length; ++i) { // Loop through each possible coordinate pair the Rook could move to
         if (lastSquareWasOpponentPiece) break; // Cannot move through pieces

@@ -6,7 +6,6 @@ import "./styles.scss";
 export class Pawn extends Piece {
   public name: string;
   private hasMoved: boolean;
-  public enPassantEligible: boolean;
 
   constructor(props: any) {
     super(props);
@@ -18,9 +17,11 @@ export class Pawn extends Piece {
   moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
     this.hasMoved = true;
     if (this.enPassantEligible) this.enPassantEligible = false;
-    const targetPiece = board[y][x];
+    let targetPiece = board[y][x];
+    let doingEnPassant = x !== this.x && y !== this.y && !targetPiece;
     let newBoard = board.slice();
     newBoard[y][x] = this;
+    if (doingEnPassant) newBoard[this.y][x] = null;
     newBoard[this.y][this.x] = null;
     if (Math.abs(this.y - y) === 2) this.enPassantEligible = true;
     this.x = x;
@@ -41,6 +42,10 @@ export class Pawn extends Piece {
     let rightTarget = board[y + direction][x + 1];
     if (leftTarget && leftTarget.color !== this.color) possibleMoves.push([x - 1, y + direction])
     if (rightTarget && rightTarget.color !== this.color) possibleMoves.push([x + 1, y + direction])
+    let epTargetLeft = board[y][x - 1];
+    let epTargetRight = board[y][x + 1];
+    if (epTargetLeft && epTargetLeft.enPassantEligible) possibleMoves.push([x - 1, y + direction])
+    if (epTargetRight && epTargetRight.enPassantEligible) possibleMoves.push([x + 1, y + direction])
     return possibleMoves;
   }
 }

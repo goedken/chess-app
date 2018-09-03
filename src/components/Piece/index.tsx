@@ -7,6 +7,8 @@ export abstract class Piece extends React.Component<any, {}> {
   color: string;
   x: number;
   y: number;
+  enPassantEligible: boolean;
+  castleEligible: boolean;
   abstract getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>>;
 
   constructor(props: any) {
@@ -14,10 +16,11 @@ export abstract class Piece extends React.Component<any, {}> {
     this.color = props.color;
     this.x = props.x;
     this.y = props.y;
+    this.enPassantEligible = false;
+    this.castleEligible = false;
   }
 
   moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
-    const targetPiece = board[y][x];
     let newBoard = board.slice();
     newBoard[y][x] = this;
     newBoard[this.y][this.x] = null;
