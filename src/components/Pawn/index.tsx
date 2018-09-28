@@ -30,23 +30,23 @@ export class Pawn extends Piece {
     return newBoard;
   }
 
-  getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
     let direction = this.color === "white" ? -1 : 1; // Direction to move
     let possibleMoves: Array<Array<number>> = [];
-    let blockingPiece = board[y + direction][x];
-    if (!blockingPiece) possibleMoves.push([x, y + direction]);
+    let blockingPiece = board[this.y + direction][this.x];
+    if (!blockingPiece) possibleMoves.push([this.x, this.y + direction]);
     if (!this.hasMoved) {
-      let twoAwayBlockingPiece = board[y + direction * 2][x];
-      if (!twoAwayBlockingPiece && !blockingPiece) possibleMoves.push([x, y + direction * 2]);  
+      let twoAwayBlockingPiece = board[this.y + direction * 2][this.x];
+      if (!twoAwayBlockingPiece && !blockingPiece) possibleMoves.push([this.x, this.y + direction * 2]);  
     }
-    let leftTarget = board[y + direction][x - 1];
-    let rightTarget = board[y + direction][x + 1];
-    if (leftTarget && leftTarget.color !== this.color) possibleMoves.push([x - 1, y + direction])
-    if (rightTarget && rightTarget.color !== this.color) possibleMoves.push([x + 1, y + direction])
-    let epTargetLeft = board[y][x - 1];
-    let epTargetRight = board[y][x + 1];
-    if (epTargetLeft && epTargetLeft.color !== this.color && epTargetLeft.enPassantEligible) possibleMoves.push([x - 1, y + direction])
-    if (epTargetRight && epTargetRight.color !== this.color && epTargetRight.enPassantEligible) possibleMoves.push([x + 1, y + direction])
+    let leftTarget = board[this.y + direction][this.x - 1];
+    let rightTarget = board[this.y + direction][this.x + 1];
+    if (leftTarget && leftTarget.color !== this.color) possibleMoves.push([this.x - 1, this.y + direction])
+    if (rightTarget && rightTarget.color !== this.color) possibleMoves.push([this.x + 1, this.y + direction])
+    let epTargetLeft = board[this.y][this.x - 1];
+    let epTargetRight = board[this.y][this.x + 1];
+    if (epTargetLeft && epTargetLeft.color !== this.color && epTargetLeft.enPassantEligible) possibleMoves.push([this.x - 1, this.y + direction])
+    if (epTargetRight && epTargetRight.color !== this.color && epTargetRight.enPassantEligible) possibleMoves.push([this.x + 1, this.y + direction])
     return possibleMoves;
   }
 }

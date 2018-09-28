@@ -7,6 +7,7 @@ import { Rook } from "../Rook";
 import { Bishop } from "../Bishop";
 import { Knight } from "../Knight";
 import { Pawn } from "../Pawn";
+import { includesCoordinates } from "../../utils";
 
 import "./styles.scss";
 
@@ -18,6 +19,7 @@ export class Board extends React.Component<any, {}> {
     const board = this.init();
     this.state = {
       selectedSquare: [null, null],
+      selectedPiece: null,
       previousSquare: [null, null],
       currentSquare: [null, null],
       validMoves: [],
@@ -26,12 +28,13 @@ export class Board extends React.Component<any, {}> {
   }
 
   movePiece(x: number, y: number) {
-    let piece = this.state.board[this.state.selectedSquare[1]][this.state.selectedSquare[0]];
-    const newBoard = piece.moveTo(x, y, this.state.board);
+    const piece = this.state.selectedPiece;
+    const newBoard = this.state.selectedPiece.moveTo(x, y, this.state.board);
     const previousSquare = [this.state.selectedSquare[0], this.state.selectedSquare[1]];
     const currentSquare = [x, y];
     this.setState({
       selectedSquare: [null, null],
+      selectedPiece: null,
       previousSquare,
       currentSquare,
       validMoves: [],
@@ -39,28 +42,19 @@ export class Board extends React.Component<any, {}> {
     })
   }
 
-  isValidMove(x: number, y: number): boolean {
-    for (let i = 0; i < this.state.validMoves.length; ++i) {
-      let move = this.state.validMoves[i];
-      if (x === move[0] && y === move[1]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   handleClick(x: number, y: number, piece: Piece) {
-    if (this.isValidMove(x, y)) {
+    if (includesCoordinates(x, y, this.state.validMoves)) {
       this.movePiece(x, y);
       return;
     }
     if (!piece) return;
     const alreadySelected = this.state.selectedSquare[0] === x && this.state.selectedSquare[1] === y;
     const selectedSquare = alreadySelected ? [null, null] : [x, y];
-    const validMoves = alreadySelected ? [] : piece.getValidMoves(x, y, this.state.board);
+    const validMoves = alreadySelected ? [] : piece.getValidMoves(this.state.board);
     this.setState({
       validMoves,
       selectedSquare,
+      selectedPiece: piece,
     });
   }
 
@@ -68,7 +62,7 @@ export class Board extends React.Component<any, {}> {
     let row = [];
     for (let i = 0; i < 8; ++i) {
       let isSelected = i === this.state.selectedSquare[0] && y === this.state.selectedSquare[1];
-      let isValidMove = this.isValidMove(i, y);
+      let isValidMove = includesCoordinates(i, y, this.state.validMoves);
       let isPreviousSquare = i === this.state.previousSquare[0] && y === this.state.previousSquare[1];
       let isCurrentSquare = i === this.state.currentSquare[0] && y === this.state.currentSquare[1];
       let color = Boolean(i % 2) === isOddRow ? "black" : "white";

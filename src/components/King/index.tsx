@@ -1,6 +1,7 @@
 import * as React from "react";
 import { KING_MOVES } from "../../constants";
 import { Piece } from "../Piece";
+import { includesCoordinates } from "../../utils";
 
 import "./styles.scss";
 
@@ -34,10 +35,32 @@ export class King extends Piece {
     return newBoard;
   }
 
-  getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
+  squareIsInCheck(x: number, y: number, board: Array<Array<Piece>>): boolean {
+    let opponentPieces: Array<Piece> = [];
+    const opponentColor = this.color === "white" ? "black" : "white";
+    for (let i = 0; i < board.length; ++i) {
+      for (let j = 0; j < board[i].length; ++j) {
+        let potentialPiece = board[i][j];
+        if (potentialPiece && potentialPiece.color === opponentColor) {
+          opponentPieces.push(potentialPiece);
+        }
+      }
+    }
+
+    for (let i = 0; i < opponentPieces.length; ++i) {
+      const opponentPiece = opponentPieces[i];
+      const validMoves = opponentPiece.getValidMoves(board);
+      if (includesCoordinates(x, y, validMoves)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
     const relativeMoves = KING_MOVES.filter(neighbor => {
-      let actualX = x + neighbor[0];
-      let actualY = y + neighbor[1];
+      let actualX = this.x + neighbor[0];
+      let actualY = this.y + neighbor[1];
       if ((actualX <= -1 || actualX >= 8) || (actualY <= -1 || actualY >= 8)) {
         return false; // Off the board
       }
@@ -49,26 +72,35 @@ export class King extends Piece {
       let canCastleKingSide = true;
       let canCastleQueenSide = true;
       for (let i = 1; i < 3; ++i) {
-        let blockingPiece = board[y][x + i];
+        let blockingPiece = board[this.y][this.x + i];
         if (blockingPiece) {
           canCastleKingSide = false;
           break;
         }
       }
-      let kingSideRook = board[y][7];
+      let kingSideRook = board[this.y][7];
       if (!kingSideRook || !kingSideRook.castleEligible) canCastleKingSide = false;
       for (let i = 1; i < 4; ++i) {
-        let blockingPiece = board[y][x - i];
+        let blockingPiece = board[this.y][this.x - i];
         if (blockingPiece) {
           canCastleQueenSide = false;
           break;
         }
       }
-      let queenSideRook = board[y][0];
+      let queenSideRook = board[this.y][0];
       if (!queenSideRook || !queenSideRook.castleEligible) canCastleQueenSide = false;
       if (canCastleKingSide) relativeMoves.push([2, 0]);
       if (canCastleQueenSide) relativeMoves.push([-2, 0]);
     }
-    return relativeMoves.map(move => [x + move[0], y + move[1]]);
+    let validMoves = [];
+    for (let i = 0; i < relativeMoves.length; ++i) {
+      let actualX = this.x + relativeMoves[i][0];
+      let actualY = this.y + relativeMoves[i][1];
+      if (this.squareIsInCheck(actualX, actualY, board)) {
+        continue;
+      }
+      validMoves.push([actualX, actualY]);
+    }
+    return validMoves;
   }
 }

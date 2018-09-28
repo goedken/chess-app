@@ -12,10 +12,10 @@ export class Knight extends Piece {
     this.name = "N";
   }
 
-  getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
     const neighbors = KNIGHT_MOVES.filter(neighbor => { // By Bob Seger
-      let actualX = x + neighbor[0];
-      let actualY = y + neighbor[1];
+      let actualX = this.x + neighbor[0];
+      let actualY = this.y + neighbor[1];
       if ((actualX <= -1 || actualX >= 8) || (actualY <= -1 || actualY >= 8)) {
         return false; // Off the board
       }
@@ -23,6 +23,6 @@ export class Knight extends Piece {
       if (!piece) return true;
       return board[actualY][actualX].color !== this.color;
     });
-    return neighbors.map(neighbor => [x + neighbor[0], y + neighbor[1]]);
+    return neighbors.map(neighbor => [this.x + neighbor[0], this.y + neighbor[1]]);
   }
 }

@@ -9,7 +9,7 @@ export abstract class Piece extends React.Component<any, {}> {
   y: number;
   enPassantEligible: boolean;
   castleEligible: boolean;
-  abstract getValidMoves(x: number, y: number, board: Array<Array<Piece>>): Array<Array<number>>;
+  abstract getValidMoves(board: Array<Array<Piece>>): Array<Array<number>>;
 
   constructor(props: any) {
     super(props);
