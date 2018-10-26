@@ -15,18 +15,20 @@ export class Pawn extends Piece {
   }
 
   // TODO: do not let white capture its own pieces en passant
-  moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
+  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
     this.hasMoved = true;
-    if (this.enPassantEligible) this.enPassantEligible = false;
     let targetPiece = board[y][x];
     let doingEnPassant = x !== this.x && y !== this.y && !targetPiece;
-    let newBoard = board.slice();
+    let newBoard = board.map(arr => arr.slice());
     newBoard[y][x] = this;
     if (doingEnPassant) newBoard[this.y][x] = null;
     newBoard[this.y][this.x] = null;
-    if (Math.abs(this.y - y) === 2) this.enPassantEligible = true;
-    this.x = x;
-    this.y = y;
+    if (save) {
+      if (this.enPassantEligible) this.enPassantEligible = false;
+      if (Math.abs(this.y - y) === 2) this.enPassantEligible = true;
+      this.x = x;
+      this.y = y;
+    }
     return newBoard;
   }
 

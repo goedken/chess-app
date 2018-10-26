@@ -16,48 +16,26 @@ export class King extends Piece {
     this.castleEligible = true;
   }
 
-  moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
-    let newBoard = board.slice();
+  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+    let newBoard = board.map(arr => arr.slice());
     newBoard[y][x] = this;
     newBoard[this.y][this.x] = null;
     if (x - this.x === 2) {
       let kingSideRook = board[this.y][7];
-      newBoard = kingSideRook.moveTo(x - 1, this.y, newBoard);
-      kingSideRook.castleEligible = false;
+      newBoard = kingSideRook.moveTo(x - 1, this.y, newBoard, save);
     } else if (x - this.x === -2) {
       let queenSideRook = board[this.y][0];
-      newBoard = queenSideRook.moveTo(x + 1, this.y, newBoard);
-      queenSideRook.castleEligible = false;
+      newBoard = queenSideRook.moveTo(x + 1, this.y, newBoard, save);
     }
-    this.x = x;
-    this.y = y;
-    this.castleEligible = false;
+    if (save) {
+      this.x = x;
+      this.y = y;
+      this.castleEligible = false;
+    }
     return newBoard;
   }
 
-  squareIsInCheck(x: number, y: number, board: Array<Array<Piece>>): boolean {
-    let opponentPieces: Array<Piece> = [];
-    const opponentColor = this.color === "white" ? "black" : "white";
-    for (let i = 0; i < board.length; ++i) {
-      for (let j = 0; j < board[i].length; ++j) {
-        let potentialPiece = board[i][j];
-        if (potentialPiece && potentialPiece.color === opponentColor) {
-          opponentPieces.push(potentialPiece);
-        }
-      }
-    }
-
-    for (let i = 0; i < opponentPieces.length; ++i) {
-      const opponentPiece = opponentPieces[i];
-      const validMoves = opponentPiece.getValidMoves(board);
-      if (includesCoordinates(x, y, validMoves)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<Piece>>, checkForCheck: boolean = true): Array<Array<number>> {
     const relativeMoves = KING_MOVES.filter(neighbor => {
       let actualX = this.x + neighbor[0];
       let actualY = this.y + neighbor[1];
@@ -96,7 +74,7 @@ export class King extends Piece {
     for (let i = 0; i < relativeMoves.length; ++i) {
       let actualX = this.x + relativeMoves[i][0];
       let actualY = this.y + relativeMoves[i][1];
-      if (this.squareIsInCheck(actualX, actualY, board)) {
+      if (checkForCheck && this.squareIsInCheck(actualX, actualY, board)) {
         continue;
       }
       validMoves.push([actualX, actualY]);

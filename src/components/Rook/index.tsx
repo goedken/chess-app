@@ -13,9 +13,9 @@ export class Rook extends Piece {
     this.castleEligible = true;
   }
 
-  moveTo(x: number, y: number, board: Array<Array<Piece>>): Array<Array<Piece>> {
-    this.castleEligible = false;
-    return super.moveTo(x, y, board);
+  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+    if (save) this.castleEligible = false;
+    return super.moveTo(x, y, board, save);
   }
 
   getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {

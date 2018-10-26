@@ -22,37 +22,51 @@ export class Board extends React.Component<any, {}> {
       selectedPiece: null,
       previousSquare: [null, null],
       currentSquare: [null, null],
-      validMoves: [],
+      kingPositions: {
+        black: [4, 0],
+        white: [4, 7],
+      },
       board,
     }
   }
 
   movePiece(x: number, y: number) {
     const piece = this.state.selectedPiece;
-    const newBoard = this.state.selectedPiece.moveTo(x, y, this.state.board);
+    const newBoard = this.state.selectedPiece.moveTo(x, y, this.state.board, false);
+    const king = this.getKing(piece.color, newBoard);
+    if (king.squareIsInCheck(king.x, king.y, newBoard)) {
+      this.setUnselected();
+      return;
+    }
+    this.state.selectedPiece.moveTo(x, y, this.state.board, true);
+    let newKingPositions = this.state.kingPositions;
+    if (piece.name === "K") {
+      newKingPositions[piece.color] = [x, y]; 
+    }
     const previousSquare = [this.state.selectedSquare[0], this.state.selectedSquare[1]];
     const currentSquare = [x, y];
     this.setState({
       selectedSquare: [null, null],
       selectedPiece: null,
       previousSquare,
+      kingPositions: newKingPositions,
       currentSquare,
-      validMoves: [],
       board: newBoard
     })
   }
 
   handleClick(x: number, y: number, piece: Piece) {
-    if (includesCoordinates(x, y, this.state.validMoves)) {
+    if (this.state.selectedPiece && this.state.selectedPiece.isValidMove(this.state.board, x, y)) {
       this.movePiece(x, y);
       return;
     }
-    if (!piece) return;
+    if (!piece) {
+      this.setUnselected();
+      return;
+    };
     const alreadySelected = this.state.selectedSquare[0] === x && this.state.selectedSquare[1] === y;
     const selectedSquare = alreadySelected ? [null, null] : [x, y];
-    const validMoves = alreadySelected ? [] : piece.getValidMoves(this.state.board);
     this.setState({
-      validMoves,
       selectedSquare,
       selectedPiece: piece,
     });
@@ -62,14 +76,11 @@ export class Board extends React.Component<any, {}> {
     let row = [];
     for (let i = 0; i < 8; ++i) {
       let isSelected = i === this.state.selectedSquare[0] && y === this.state.selectedSquare[1];
-      let isValidMove = includesCoordinates(i, y, this.state.validMoves);
       let isPreviousSquare = i === this.state.previousSquare[0] && y === this.state.previousSquare[1];
       let isCurrentSquare = i === this.state.currentSquare[0] && y === this.state.currentSquare[1];
       let color = Boolean(i % 2) === isOddRow ? "black" : "white";
       if (isSelected) {
         color = "selected";
-      } else if (isValidMove) {
-        color = "highlighted";
       } else if (isPreviousSquare || isCurrentSquare) {
         color = "just-moved";
       }
@@ -80,6 +91,19 @@ export class Board extends React.Component<any, {}> {
       row.push(cell);
     }
     return row;
+  }
+
+  getKing(color: string, board: Array<Array<Piece>> = this.state.board): King {
+    const kingX = this.state.kingPositions[color][0];
+    const kingY = this.state.kingPositions[color][1];
+    return board[kingY][kingX];
+  }
+
+  setUnselected() {
+    this.setState({
+      selectedSquare: [null, null],
+      selectedPiece: null,
+    });
   }
 
   render() {
