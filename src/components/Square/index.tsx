@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Piece } from "../Piece";
 
 import "./styles.scss";
 

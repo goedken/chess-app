@@ -1,4 +1,3 @@
-import * as React from "react";
 import { KNIGHT_MOVES } from "../../constants"; // By Bob Seger
 import { Piece } from "../Piece";
 

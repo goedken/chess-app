@@ -1,7 +1,5 @@
-import * as React from "react";
 import { KING_MOVES } from "../../constants";
 import { Piece } from "../Piece";
-import { includesCoordinates } from "../../utils";
 
 import "./styles.scss";
 

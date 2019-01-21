@@ -1,9 +1,8 @@
-import * as React from "react";
 import { includesCoordinates } from "../../utils";
 
 import "./styles.scss";
 
-export abstract class Piece extends React.Component<any, {}> {
+export abstract class Piece {
   name: string;
   color: string;
   x: number;
@@ -13,7 +12,6 @@ export abstract class Piece extends React.Component<any, {}> {
   abstract getValidMoves(board: Array<Array<Piece>>, checkForCheck?: boolean): Array<Array<number>>;
 
   constructor(props: any) {
-    super(props);
     this.color = props.color;
     this.x = props.x;
     this.y = props.y;

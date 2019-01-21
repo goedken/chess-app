@@ -1,4 +1,3 @@
-import * as React from "react";
 import { BISHOP_MOVES } from "../../constants";
 import { Piece } from "../Piece";
 
