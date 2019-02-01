@@ -1,13 +1,5 @@
 import * as React from "react";
 import { Square } from "../Square";
-import { Piece } from "../Piece";
-import { King } from "../King";
-import { Queen } from "../Queen";
-import { Rook } from "../Rook";
-import { Bishop } from "../Bishop";
-import { Knight } from "../Knight";
-import { Pawn } from "../Pawn";
-import { includesCoordinates } from "../../utils";
 
 import "./styles.scss";
 
@@ -18,13 +10,13 @@ export class Board extends React.Component<any, {}> {
     let row = [];
     for (let i = 0; i < 8; ++i) {
       let isSelected =
-        i === this.state.selectedSquare[0] &&
-        y === this.state.selectedSquare[1];
+        i === this.props.selectedSquare[0] &&
+        y === this.props.selectedSquare[1];
       let isPreviousSquare =
-        i === this.state.previousSquare[0] &&
-        y === this.state.previousSquare[1];
+        i === this.props.previousSquare[0] &&
+        y === this.props.previousSquare[1];
       let isCurrentSquare =
-        i === this.state.currentSquare[0] && y === this.state.currentSquare[1];
+        i === this.props.currentSquare[0] && y === this.props.currentSquare[1];
       let color = Boolean(i % 2) === isOddRow ? "black" : "white";
       if (isSelected) {
         color = "selected";
@@ -43,147 +35,35 @@ export class Board extends React.Component<any, {}> {
     }
     return row;
   }
-  
-  setUnselected() {
-    this.setState({
-      selectedSquare: [null, null],
-      selectedPiece: null
-    });
-  }
 
   render() {
     return (
       <div>
         <div className="board-row">
-          {this.renderRow(true, this.state.board[0], 0)}
+          {this.renderRow(true, this.props.layout[0], 0)}
         </div>
         <div className="board-row">
-          {this.renderRow(false, this.state.board[1], 1)}
+          {this.renderRow(false, this.props.layout[1], 1)}
         </div>
         <div className="board-row">
-          {this.renderRow(true, this.state.board[2], 2)}
+          {this.renderRow(true, this.props.layout[2], 2)}
         </div>
         <div className="board-row">
-          {this.renderRow(false, this.state.board[3], 3)}
+          {this.renderRow(false, this.props.layout[3], 3)}
         </div>
         <div className="board-row">
-          {this.renderRow(true, this.state.board[4], 4)}
+          {this.renderRow(true, this.props.layout[4], 4)}
         </div>
         <div className="board-row">
-          {this.renderRow(false, this.state.board[5], 5)}
+          {this.renderRow(false, this.props.layout[5], 5)}
         </div>
         <div className="board-row">
-          {this.renderRow(true, this.state.board[6], 6)}
+          {this.renderRow(true, this.props.layout[6], 6)}
         </div>
         <div className="board-row">
-          {this.renderRow(false, this.state.board[7], 7)}
+          {this.renderRow(false, this.props.layout[7], 7)}
         </div>
       </div>
     );
-  }
-
-  init(): Array<Array<Piece>> {
-    const whiteKing = new King({
-      color: "white"
-    });
-    const blackKing = new King({
-      color: "black"
-    });
-    const whiteQueen = new Queen({
-      color: "white"
-    });
-    const blackQueen = new Queen({
-      color: "black"
-    });
-    const whiteRook1 = new Rook({
-      color: "white",
-      x: 0,
-      y: 7
-    });
-    const whiteRook2 = new Rook({
-      color: "white",
-      x: 7,
-      y: 7
-    });
-    const blackRook1 = new Rook({
-      color: "black",
-      x: 0,
-      y: 0
-    });
-    const blackRook2 = new Rook({
-      color: "black",
-      x: 7,
-      y: 0
-    });
-    const whiteBishop1 = new Bishop({
-      color: "white",
-      x: 2,
-      y: 7
-    });
-    const whiteBishop2 = new Bishop({
-      color: "white",
-      x: 5,
-      y: 7
-    });
-    const blackBishop1 = new Bishop({
-      color: "black",
-      x: 2,
-      y: 0
-    });
-    const blackBishop2 = new Bishop({
-      color: "black",
-      x: 5,
-      y: 0
-    });
-    const whiteKnight1 = new Knight({
-      color: "white",
-      x: 1,
-      y: 7
-    });
-    const whiteKnight2 = new Knight({
-      color: "white",
-      x: 6,
-      y: 7
-    });
-    const blackKnight1 = new Knight({
-      color: "black",
-      x: 1,
-      y: 0
-    });
-    const blackKnight2 = new Knight({
-      color: "black",
-      x: 6,
-      y: 0
-    });
-    let board = new Array(8).fill(null).map(() => new Array(8).fill(null));
-    board[0][4] = blackKing;
-    board[7][4] = whiteKing;
-    board[0][3] = blackQueen;
-    board[7][3] = whiteQueen;
-    board[0][0] = blackRook1;
-    board[0][7] = blackRook2;
-    board[7][0] = whiteRook1;
-    board[7][7] = whiteRook2;
-    board[0][2] = blackBishop1;
-    board[0][5] = blackBishop2;
-    board[7][2] = whiteBishop1;
-    board[7][5] = whiteBishop2;
-    board[0][1] = blackKnight1;
-    board[0][6] = blackKnight2;
-    board[7][1] = whiteKnight1;
-    board[7][6] = whiteKnight2;
-    for (let i = 0; i < 8; ++i) {
-      board[1][i] = new Pawn({
-        color: "black",
-        x: i,
-        y: 1
-      });
-      board[6][i] = new Pawn({
-        color: "white",
-        x: i,
-        y: 6
-      });
-    }
-    return board;
   }
 }

@@ -1,0 +1,25 @@
+@import "../../colors";
+
+.game-container {
+  display: flex;
+  flex-direction: row;
+
+  .game-board {
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+
+  .game-info {
+    .black-piece-list {
+      .taken-piece {
+        color: $black;
+      }
+    }
+
+    .white-piece-list {
+      .taken-piece {
+        color: $blue;
+      }
+    }
+  }
+}
