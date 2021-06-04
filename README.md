@@ -2,10 +2,4 @@
 
 ### Installation
 
-Install webpack globally via `npm install -g webpack`, then install dependencies via `npm install`
-
-### Scripts
-
-- `start` starts development server and watches for file chanages
-- `build` builds distribution files
-
+Must have node version 16 installed. Clone repo and then run `npm install` at root to download dependencies. `npm start` starts the application at `localhost:3000`.
