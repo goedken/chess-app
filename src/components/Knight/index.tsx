@@ -11,7 +11,7 @@ export class Knight extends Piece {
     this.name = "N";
   }
 
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>): Array<Array<number>> {
     const neighbors = KNIGHT_MOVES.filter(neighbor => { // By Bob Seger
       let actualX = this.x + neighbor[0];
       let actualY = this.y + neighbor[1];

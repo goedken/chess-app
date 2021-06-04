@@ -3,13 +3,12 @@ import { includesCoordinates } from "../../utils";
 import "./styles.scss";
 
 export abstract class Piece {
-  name: string;
   color: string;
   x: number;
   y: number;
   enPassantEligible: boolean;
   castleEligible: boolean;
-  abstract getValidMoves(board: Array<Array<Piece>>, checkForCheck?: boolean): Array<Array<number>>;
+  abstract getValidMoves(board: Array<Array<any>>, checkForCheck?: boolean): Array<Array<number>>;
 
   constructor(props: any) {
     this.color = props.color;
@@ -19,7 +18,7 @@ export abstract class Piece {
     this.castleEligible = false;
   }
 
-  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+  moveTo(x: number, y: number, board: Array<Array<any>>, save: boolean = false): Array<Array<any>> {
     let newBoard = board.map(arr => arr.slice()); // Clone 2D array
     newBoard[y][x] = this;
     newBoard[this.y][this.x] = null;
@@ -30,7 +29,7 @@ export abstract class Piece {
     return newBoard;
   }
 
-  squareIsInCheck(x: number, y: number, board: Array<Array<Piece>>): boolean {
+  squareIsInCheck(x: number, y: number, board: Array<Array<any>>): boolean {
     let opponentPieces: Array<Piece> = [];
     const opponentColor = this.color === "white" ? "black" : "white";
     for (let i = 0; i < board.length; ++i) {
@@ -52,7 +51,7 @@ export abstract class Piece {
     return false;
   }
 
-  isValidMove(board: Array<Array<Piece>>, x: number, y: number): boolean {
+  isValidMove(board: Array<Array<any>>, x: number, y: number): boolean {
     const validMoves = this.getValidMoves(board);
     return includesCoordinates(x, y, validMoves);
   }

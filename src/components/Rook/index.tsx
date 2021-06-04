@@ -12,12 +12,12 @@ export class Rook extends Piece {
     this.castleEligible = true;
   }
 
-  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+  moveTo(x: number, y: number, board: Array<Array<any>>, save: boolean = false): Array<Array<any>> {
     if (save) this.castleEligible = false;
     return super.moveTo(x, y, board, save);
   }
 
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>): Array<Array<number>> {
     let relativePositions: number[][] = [];
     for (let direction in ROOK_MOVES) { // Loop through each possible direction the Rook can move in
       let squares = ROOK_MOVES[direction];

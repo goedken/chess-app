@@ -17,7 +17,7 @@ export class Queen extends Piece {
     }
   }
 
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>): Array<Array<number>> {
     let relativePositions: number[][] = [];
     for (let direction in QUEEN_MOVES) { // Loop through each possible direction the Rook can move in
       let squares = QUEEN_MOVES[direction];

@@ -11,7 +11,7 @@ export class Bishop extends Piece {
     this.name = "B";
   }
 
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>): Array<Array<number>> {
     let relativePositions: number[][] = [];
     for (let direction in BISHOP_MOVES) { // Loop through each possible direction the Rook can move in
       let squares = BISHOP_MOVES[direction];

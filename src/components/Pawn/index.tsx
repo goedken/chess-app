@@ -14,7 +14,7 @@ export class Pawn extends Piece {
   }
 
   // TODO: do not let white capture its own pieces en passant
-  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+  moveTo(x: number, y: number, board: Array<Array<any>>, save: boolean = false): Array<Array<any>> {
     this.hasMoved = true;
     let targetPiece = board[y][x];
     let doingEnPassant = x !== this.x && y !== this.y && !targetPiece;
@@ -31,7 +31,7 @@ export class Pawn extends Piece {
     return newBoard;
   }
 
-  getValidMoves(board: Array<Array<Piece>>): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>): Array<Array<number>> {
     let direction = this.color === "white" ? -1 : 1; // Direction to move
     let possibleMoves: Array<Array<number>> = [];
     let blockingPiece = board[this.y + direction][this.x];

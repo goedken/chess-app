@@ -14,7 +14,7 @@ export class King extends Piece {
     this.castleEligible = true;
   }
 
-  moveTo(x: number, y: number, board: Array<Array<Piece>>, save: boolean = false): Array<Array<Piece>> {
+  moveTo(x: number, y: number, board: Array<Array<any>>, save: boolean = false): Array<Array<any>> {
     let newBoard = board.map(arr => arr.slice());
     newBoard[y][x] = this;
     newBoard[this.y][this.x] = null;
@@ -33,7 +33,7 @@ export class King extends Piece {
     return newBoard;
   }
 
-  getValidMoves(board: Array<Array<Piece>>, checkForCheck: boolean = true): Array<Array<number>> {
+  getValidMoves(board: Array<Array<any>>, checkForCheck: boolean = true): Array<Array<number>> {
     const relativeMoves = KING_MOVES.filter(neighbor => {
       let actualX = this.x + neighbor[0];
       let actualY = this.y + neighbor[1];

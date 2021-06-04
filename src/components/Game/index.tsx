@@ -175,7 +175,7 @@ export class Game extends React.Component<any, {}> {
     );
   }
 
-  init(): Array<Array<Piece>> {
+  init(): Array<Array<any>> {
     const whiteKing = new King({
       color: "white"
     });
